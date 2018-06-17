@@ -1,0 +1,21 @@
+			setting server config and cgi
+installing apache2 local server:
+	$sudo apt-get install apache2
+setting cgi:
+	$cd /etc/apache2/mods-enabled
+	$sudo ln -s ../mods-available/cgi.load
+
+			make python script in cgi 
+script directory to upload:/usr/lib/cgi-bin/
+in file:
+	#!/usr/bin/python3
+	
+	
+need 2 empty lines!
+then make script executable via 
+	sudo chmod +x scriptname.py
+then 
+	sudo service apache2 reload
+			making static ip for apache server
+will be written
+	

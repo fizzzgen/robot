@@ -1,4 +1,5 @@
-def ArduinoMakePin(PinMode,PinValue=0): #just making list
+import requests
+def ArduinoMakePin(PinMode,PinValue=0): #just making tuple
     return list((PinMode,PinValue))
 class ArduinoControl:
 
@@ -51,8 +52,17 @@ class ArduinoControl:
             print ("Something went wrong with PinRead!")
 
     def GetConfiguration(self): #will get config of pins from Raspberry and make PinDictionary like it is
-        return
+            response = requests.post(self.RobotAdress,data={"Type":"GetConfiguration"})
+            unformatted_dict = response.text
+            unformatted_dict = unformatted_dict.replace('\n','')
+            unformatted_dict = unformatted_dict.split("&")
+            for i in range(0,len(unformatted_dict)):
+                unformatted_dict[i]=unformatted_dict[i].split("=")
+            for i in range(0,len(unformatted_dict),2):
+                self.PinDictionary[int(unformatted_dict[i][0])]=ArduinoMakePin(str(unformatted_dict[i][1]),int(unformatted_dict[i+1][1]))
+            return
 
     def SendConfiguration(self): #will send config of pins from this scratch and make PinDictionary on Raspberry like it is
-        return
-A = ArduinoControl("[kklhd")
+            self.PinDictionary["Type"]="SendConfiguration"
+            response = requests.post(self.RobotAdress,data=self.PinDictionary)
+            return

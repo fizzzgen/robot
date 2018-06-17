@@ -57,13 +57,14 @@ class ArduinoControl:
 
     def getConfiguration(self):  # will get config of pins from Raspberry and make PinDictionary like it is
         response = requests.post(self.RobotAdress, data={"Type":"GetConf"})
-        #print(str(dict(response.text)))
-
+        self.PinDictionary = json.load(response.text)
+        print(self.PinDictionary)
         return
 
-    def sendConfiguration(
-            self):  # will send config of pins from this scratch and make PinDictionary on Raspberry like it is
-        self.PinDictionary["Type"] = "SendConf"
-        response = requests.post(self.RobotAdress, data=self.PinDictionary)
+    def sendConfiguration(self):  # will send config of pins from this scratch and make PinDictionary on Raspberry like it is
+        data = {}
+        data["Type"] = "SendConf"
+        data["Dict"]=json.dump(self.PinDictionary)
+        response = requests.post(self.RobotAdress, data=data)
         print(response.text)
         return

@@ -55,3 +55,4 @@ class ArduinoControl:
 
     def SendConfiguration(self): #will send config of pins from this scratch and make PinDictionary on Raspberry like it is
         return
+A = ArduinoControl("[kklhd")
